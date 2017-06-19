@@ -1,0 +1,25 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "ucsd homework",
+  "main": "keys.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Goosetaculous/liri-node-app.git"
+  },
+  "author": "goose",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Goosetaculous/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/Goosetaculous/liri-node-app#readme",
+  "dependencies": {
+    "node-spotify-api": "^1.0.5",
+    "nodemon": "^1.11.0",
+    "request": "^2.81.0",
+    "twitter": "^1.7.1"
+  }
+}
