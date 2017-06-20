@@ -21,8 +21,6 @@
             }
         })
     }
-
-
     function createLogFile(command){
         fs.writeFile('log.txt',command,function (err){
             if (err){
@@ -62,12 +60,19 @@
             if(!error  && response.statusCode ==  200){
                 var obj= JSON.parse(body)
                 console.log(obj.Title)
+                writeLogFile(obj.Title)
                 console.log(obj.Year)
+                writeLogFile(obj.Year)
                 console.log(obj.imdbRating)
+                writeLogFile(obj.imdbRating)
                 console.log(obj.Country)
+                writeLogFile(obj.Country)
                 console.log(obj.Language)
+                writeLogFile(obj.Language)
                 console.log(obj.Plot)
+                writeLogFile(obj.Plot)
                 console.log(obj.Actors)
+                writeLogFile(obj.Actors)
                 console.log(obj.Ratings[1].value)
             }
 
