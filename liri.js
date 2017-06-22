@@ -14,8 +14,9 @@
 
     function getCommand(command){
         if(Array.isArray(command)){
+            var song = command[1]
             var command = command[0]
-            process.argv[3] =  command[1]
+            process.argv[3] =  song
         }
         fs.appendFile('log.txt',buildCommandstring()+":\n",function(err){
             err ? console.log("Something wrong with writing the file ") : null
@@ -28,7 +29,6 @@
                 getSong(checkTitle('song'))
                 break;
             case 'movie-this':
-
                 getMovie(adjustMovieTitle(checkTitle('movie')))
                 break;
             case 'do-what-it-says':
@@ -38,12 +38,10 @@
     }
 
     function readRandomfile(file){
-
         fs.readFile(file,function(err,data){
             if(err){
                 console.log("something went wrong on reading the file")
             }else {
-                var commandStrings = ['my-tweets','spotify-this-song','movie-this','do-what-it-says']
                 var txt = data.toString().split(",")
                 getCommand(txt)
             }
@@ -52,9 +50,7 @@
 
     function writeLogFile(log){
         fs.appendFile('./log.txt',"\t"+log+"\n",function(err){
-            if(err){
-                console.log("error writing on log file")
-            }
+            err ? console.log("error writing on log file") : null
         })
     }
 
@@ -111,11 +107,7 @@
     }
     function rottentomatoesCheck(link, year,callback){
         request(link, function(error, response, body){
-            if(response.toString().indexOf("404 - Not Found")>-1){
-                callback (link+"_"+year)
-            }else{
-                callback (link)
-            }
+            response.toString().indexOf("404 - Not Found")> -1 ? callback (link+"_"+year):  callback (link)
         })
     }
 
@@ -161,9 +153,6 @@
             }
         });
     }
-
-
-
     fs.access('./log.txt','wx', function(err){
         err ? createLogFile(command) : null;
     })
