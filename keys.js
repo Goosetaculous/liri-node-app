@@ -10,3 +10,4 @@ exports.spotifyKeys = {
     id       : '06e69991ea644739bc647ba0bd64de8c',
     secret   : 'f867edc7d2524327adb797ae701cf650'
 }
+
