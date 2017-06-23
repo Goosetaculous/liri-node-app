@@ -11,8 +11,22 @@
     var client   =  new Twitter(keys.twitterKeys)
     var spotify  =  new Spotify(keys.spotifyKeys)
     var command =  process.argv[2]
+    var cmdIndex = 0
 
-    function getCommand(command){
+    function evaluateCommand(cmd){
+        var validCommands = ['my-tweets','spotify-this-song','movie-this','do-what-it-says']
+        var param=""
+
+        cmd.forEach(function(data){
+            if (validCommands.indexOf(data) > -1 && validCommands.indexOf(cmd[cmdIndex+1]) == -1 ) {
+                param = cmd[cmdIndex+1]
+            }
+            cmdIndex > 1 ? getCommand(data, param): null
+            cmdIndex++
+        })
+    }
+
+    function getCommand(command , param){
         if(Array.isArray(command)){
             var song = command[1]
             var command = command[0]
@@ -26,10 +40,10 @@
                 getTweets()
                 break;
             case 'spotify-this-song':
-                getSong(checkTitle('song'))
+                getSong(checkTitle('song', param))
                 break;
             case 'movie-this':
-                getMovie(adjustMovieTitle(checkTitle('movie')))
+                getMovie(adjustMovieTitle(checkTitle('movie',param)))
                 break;
             case 'do-what-it-says':
                 readRandomfile("./random.txt")
@@ -100,7 +114,7 @@
                 rottentomatoesCheck('https://www.rottentomatoes.com/m/'+ adjustMovieTitle(movie), obj.Year,function(link){
                     var rotTomatolink = link
                     writeLogFile("* Rottentomatoes Link: "+ rotTomatolink)
-                    console.log("* Rottentomatoes Link: "+rotTomatolink)
+                    console.log("* Rottentomatoes Link: "+rotTomatolink+"\n")
                 })
             }
         })
@@ -111,10 +125,10 @@
         })
     }
 
-    function checkTitle(command) {
+    function checkTitle(command, title) {
         var commandStrings = ['my-tweets','spotify-this-song','movie-this','do-what-it-says']
-        if(process.argv.length > 3 && commandStrings.indexOf(process.argv[3]) === -1 ){
-            return process.argv[3]
+        if(title && commandStrings.indexOf(title) === -1 ){
+            return title
         }else if(command == 'song') {
             writeLogFile("Need a song title, so we'll provide 'The Sign'")
             return "The Sign Ace of Base"
@@ -136,7 +150,7 @@
             writeLogFile("* Song: "+data.tracks.items[0].name)
             console.log("* Link: "+data.tracks.items[0].external_urls.spotify)
             writeLogFile("* Link: "+data.tracks.items[0].external_urls.spotify)
-            console.log("* Album: "+data.tracks.items[0].album.name)
+            console.log("* Album: "+data.tracks.items[0].album.name+"\n")
             writeLogFile("* Album: "+data.tracks.items[0].album.name)
         });
     }
@@ -156,5 +170,6 @@
     fs.access('./log.txt','wx', function(err){
         err ? createLogFile(command) : null;
     })
-    getCommand(command)
+    evaluateCommand(process.argv)
+    //getCommand(command)
 })()
